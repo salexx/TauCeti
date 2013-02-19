@@ -1,3 +1,15 @@
+Math.seed = 0;
+ 
+Math.rnd = function(max, min) {
+    max = max || 1;
+    min = min || 0;
+ 
+    Math.seed = (Math.seed * 9301 + 49297) % 233280;
+    var rnd = Math.seed / 233280;
+ 
+    return min + rnd * (max - min);
+};
+
 if (!Detector.webgl)
     Detector.addGetWebGLMessage();
 
@@ -33,25 +45,18 @@ function init() {
 
     renderer = new THREE.WebGLRenderer({antialias: true});
 
-    camera = new THREE.PerspectiveCamera(35, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 2500);
+    camera = new THREE.PerspectiveCamera(35, SCREEN_WIDTH / SCREEN_HEIGHT, 1, 1000);
 
     scene = new THREE.Scene();
 
+    PointLight = new pointlight(scene);
 
-        scene = new THREE.Scene();
-        
-        PointLight = new pointlight(scene);
-    
-        scene.add( camera );
-	
-        scene.fog = new THREE.FogExp2( 0x050510, 0.0025 );
-        //scene.fog = new THREE.Fog( 'rgb( 50, 50, 50 )', 1, 700 );
-        //scene.fog.color = new THREE.Color( 20, 20, 20 );
+    scene.add( camera );
 
+    //scene.fog = new THREE.Fog( 'rgb( 50, 50, 50 )', 1, 700 );
+    //scene.fog.color = new THREE.Color( 20, 20, 20 );
 
-    scene.add(camera);
-
-    scene.fog = new THREE.FogExp2(0x050510, 0.0025);
+    scene.fog = new THREE.FogExp2(0x000000, 0.0025);
 
     scene.add(new THREE.AmbientLight('rgb(5,5,20)'));
 
@@ -61,17 +66,6 @@ function init() {
     scene.add(directionalLight);
 
     var maxAnisotropy = renderer.getMaxAnisotropy();
-
-    if (maxAnisotropy > 0) {
-
-        document.getElementById("val_left").innerHTML = maxAnisotropy;
-
-    } else {
-
-        document.getElementById("val_left").innerHTML = "not supported";
-        document.getElementById("val_right").innerHTML = "not supported";
-
-    }
 
     terrain = new terrain(scene, maxAnisotropy);
     terrain.MakeBiburats();
@@ -88,31 +82,9 @@ function init() {
     stats = new Stats();
     container.appendChild( stats.domElement );
 
-        loader = new THREE.JSONLoader();
-        loader.load('model/fabric.json', function(geometry) {
+    //loader = new THREE.JSONLoader();
+    //loader.load('model/fabric.json', function(geometry) {
 
-
-//    sphere.num = UTILS.addLineColor(scene,1,15)-1;
-//    terrain.energyLines.push(sphere);
-    for (var i = 0; i < 20; i++) {
-            meterial_g = new THREE.MeshLambertMaterial({color: 0xffffff, shading: THREE.FlatShading, overdraw: true});
-
-            mesh1 = new THREE.Mesh(geometry, meterial_g);
-            mesh1.position.x = Math.random() * 1000 - 500;
-            mesh1.position.z = Math.random() * 1000 - 500;
-//            mesh1.geometry.boundingSphere.radius = 10;
-            mesh1.updateMatrix();
-            mesh1.name = "sphere";
-            mesh1.num = UTILS.addLineColor(scene,1,15)-1;
-            UTILS.lines[mesh1.num].position.copy(mesh1.position);
-            UTILS.lines[mesh1.num].updateMatrix();
-            terrain.energyLines.push(mesh1);
-            scene.add( mesh1 );
-        }
-
-    terrain.InitEnergyLines();
-    });
-    
     // RENDERER
 
     renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -131,7 +103,7 @@ function init() {
     scene.add(controls.getObject());
     controls.enabled = true;
 
-
+    loadfabric();
 
     var renderModel = new THREE.RenderPass(scene, camera);
     var effectBloom = new THREE.BloomPass(1.2);
@@ -200,11 +172,11 @@ function render() {
     if (collision === false) {
         controls.controlSet(true);
     }
-        scan.update(delta_time);
 
-if (document.getElementById( "val_left" )){
-    document.getElementById( "val_left" ).innerHTML = controls.vv;
-}
+    scan.update(delta_time);
+
+    //document.getElementById( "val_left" ).innerHTML = controls.vv;
+    document.getElementById( "val_left" ).innerHTML = Math.floor(controls.getObject().position.x) + " : " + Math.floor(controls.getObject().position.z);
 
     renderer.clear();
     composer.render();

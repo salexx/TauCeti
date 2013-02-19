@@ -27,6 +27,7 @@ UTILS.addLine = function(parentObj){
     this.lines.push(line);
     parentObj.add(line);
 };
+
 UTILS.addLineColor = function(parentObj,size,posY){
     var material = new THREE.LineBasicMaterial( { vertexColors: THREE.VertexColors } );
     var line=new THREE.Line(UTILS.LineGeometry2(size,posY),material,THREE.LinePieces);
