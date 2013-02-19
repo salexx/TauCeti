@@ -4,6 +4,7 @@
 
 THREE.PointerLockControls = function(camera) {
 
+    var speedMax = 1;//максимальная скорость
     var scope = this;
 
     var yawObject = new THREE.Object3D();
@@ -172,32 +173,31 @@ THREE.PointerLockControls = function(camera) {
     };
 
 
-    var speedMax = 10;//максимальная скорость
     var accelStop = 0.08;//ускорение торможения
     var accelMove = 0.12;//ускорение движения
     var accelYawMove = 0.0016;//ускорение вращения
     var accelYawStop = 0.08;
     //var speedYawMax=0.016;
 
-    var yawObject_position_y = 3;
+//    var yawObject_position_y = 3;
 
-this.vv=0;
+    this.vv = 0;
     this.update = function(delta) {//delta is "delta time"
 
         if (scope.enabled === false)
             return;
-        if (enableContols === false) {
-            this.move();
-//            moveForward = false;
-//            moveBackward = false;
-            return;
-        }
+
 // торможения
         velocity.x += (-velocity.x) * accelStop * delta; // уменьшение скорости = торможение X
         velocity.z += (-velocity.z) * accelStop * delta; // уменьшение скорости = торможение Z
         velocityYaw += (-velocityYaw) * accelYawStop * delta;
 
+        if (enableContols === false) {
+            this.move();
+            return;
+        }
 // ускорения
+    if (velocity.length()<speedMax){
         if (moveForward)
             velocity.z -= accelMove * delta; // увеличение скорости = движение вперёд
         if (moveBackward)
@@ -207,6 +207,7 @@ this.vv=0;
             velocity.x -= accelMove * delta;// увеличение скорости = движение влево
         if (moveRight)
             velocity.x += accelMove * delta;
+    }
 // фактические изменения конечных величин
         rotateYaw.z += (-rotateYaw.z) * 0.016 * delta * 2;
         if (rotateYawCW) {
@@ -234,6 +235,7 @@ this.vv=0;
 
         yawObject.translateX(velocity.x);
         yawObject.translateZ(velocity.z);
+        
         yawObject.position.y = 3; // The kostyl
 
     };
@@ -242,7 +244,7 @@ this.vv=0;
         if (this.getControlValue() === false) { // управление отключено, значит углы вычислены
             return;
         }
-        var obj=ob.clone();
+        var obj = ob.clone();
         var camObj = camera.parent.clone();
 //        camObj.updateMatrix();
 //        camObj.updateMatrixWorld(true);
@@ -259,14 +261,10 @@ this.vv=0;
 
         vRadius.sub(objPos, camPos);
         dir = this.GetVelocity();
-        if (true){//dir.lengthSq() < 1) {
-            dir = new THREE.Vector3(0, 0, -1);
-//            dir = 
-                    camObj.localToWorld(dir);
-        } else {
-            dir.normalize();
-            camObj.localToWorld(dir);//dir меняется!
-        }
+        dir.y = camPos.y;
+        //dir.normalize();
+        camObj.localToWorld(dir);//dir меняется!
+
         dir.subSelf(camPos);
         dir.y = 0;//работаем в лоскости XZ
 
@@ -275,37 +273,30 @@ this.vv=0;
         vRadiusNorm.y = 0;//работаем в лоскости XZ
 
         var alpha = vRadiusNorm.angleTo(dir);
-        if (alpha>Math.PI / 2){
-            alpha=alpha;
-        }
 
-        var pointCol = vRadiusNorm.clone();
-        pointCol.addScalar(camRadius);
-        pointCol.y = 0.5;
-        pointCol.addSelf(camPos);
-        UTILS.lookTo(0, camPos, vRadius);
-        UTILS.lookTo(3, camPos, vRadius);
-        UTILS.lines[3].rotation.y += Math.PI / 2;
-
-        UTILS.lines[1].position.copy(camObj.position);//matrix.getPosition());
-        UTILS.lines[1].rotation.copy(camObj.rotation);
-        UTILS.lines[2].position.copy(camObj.position);
-        UTILS.lines[2].rotation.copy(camObj.rotation);
+//        UTILS.lookTo(0, camPos, vRadius);
+//        UTILS.lookTo(3, camPos, vRadius);
+//        UTILS.lines[3].rotation.y += Math.PI / 2;
+//
+//        UTILS.lines[1].position.copy(camObj.position);//matrix.getPosition());
+//        UTILS.lines[1].rotation.copy(camObj.rotation);
+//        UTILS.lines[2].position.copy(camObj.position);
+//        UTILS.lines[2].rotation.copy(camObj.rotation);
 
 
         var delta = objPos.clone();
         camObj.worldToLocal(delta);
 
         var sign = delta.x > 0 ? 1 : -1;
-this.vv=alpha;
-        UTILS.lines[2].rotation.y += (Math.PI - 2 * alpha) * sign;
+        this.vv = alpha;
+//        UTILS.lines[2].rotation.y += (Math.PI - 2 * alpha) * sign;
         if (delta.z >= 0)
             alpha += Math.PI;
         this.SetImpulse((Math.PI - 2 * alpha) * sign);//отключает управление с клавиатуры
     };
     this.CheckCollisionWithCamera = function(obj) {
 
-        if (obj.geometry && obj.geometry.boundingSphere.radius < 90) {// instanceof THREE.Mesh){
+        if (obj.geometry && obj.geometry.boundingSphere.radius < 90 && obj.geometry.boundingSphere.radius > 5) {// instanceof THREE.Mesh){
 
             var camPos = camera.parent.matrix.getPosition().clone();//position.clone();
 
@@ -324,5 +315,10 @@ this.vv=alpha;
         }
         return false;
     };
-
+    this.getSpeed = function(){
+        return velocity.length();
+    };
+    this.getSpeedPercent = function(){
+        return velocity.length()/speedMax;
+    };
 };

@@ -6,11 +6,11 @@ var SCREEN_HEIGHT = window.innerHeight;
 
 var container, stats;
 
-var camera, scene, renderer, geometry, terrain, meterial_g, scan;
+var camera, scene, renderer, geometry, terrain, meterial_g;
 
 var PointLight;
 
-var scan;
+var scan, bibutats;
 
 var num = 0;
 
@@ -74,22 +74,27 @@ function init() {
     }
 
     terrain = new terrain(scene, maxAnisotropy);
-
-      var mat = new THREE.MeshLambertMaterial({color: 0xffffff, shading: THREE.FlatShading, overdraw: true});
+    terrain.MakeBiburats();
+    terrain.energyLines=[];
+    
+    var mat = new THREE.MeshLambertMaterial({color: 0xffffff, shading: THREE.FlatShading, overdraw: true});
     sphere = new THREE.Mesh(new THREE.SphereGeometry(20, 20, 10), mat);
     sphere.position.z = -150;
     sphere.position.x = -50;
     sphere.updateMatrix();
     sphere.name = "factory";
     scene.add(sphere);
-        stats = new Stats();
-        container.appendChild( stats.domElement );
-    for (var i = 0; i < 20; i++) {
+    
+    stats = new Stats();
+    container.appendChild( stats.domElement );
 
         loader = new THREE.JSONLoader();
         loader.load('model/fabric.json', function(geometry) {
 
 
+//    sphere.num = UTILS.addLineColor(scene,1,15)-1;
+//    terrain.energyLines.push(sphere);
+    for (var i = 0; i < 20; i++) {
             meterial_g = new THREE.MeshLambertMaterial({color: 0xffffff, shading: THREE.FlatShading, overdraw: true});
 
             mesh1 = new THREE.Mesh(geometry, meterial_g);
@@ -98,20 +103,16 @@ function init() {
 //            mesh1.geometry.boundingSphere.radius = 10;
             mesh1.updateMatrix();
             mesh1.name = "sphere";
+            mesh1.num = UTILS.addLineColor(scene,1,15)-1;
+            UTILS.lines[mesh1.num].position.copy(mesh1.position);
+            UTILS.lines[mesh1.num].updateMatrix();
+            terrain.energyLines.push(mesh1);
             scene.add( mesh1 );
+        }
 
-
-            mesh2 = new THREE.Mesh(geometry, meterial_g);
-            mesh2.rotation.x = Math.PI;
-            mesh2.position.x = mesh1.position.x;
-            mesh2.position.z = mesh1.position.z;
-//            mesh1.geometry.boundingSphere.radius=10;
-            mesh2.updateMatrix();
-            mesh2.name = "sphere";
-            scene.add( mesh2 );
-        });
-    }
-
+    terrain.InitEnergyLines();
+    });
+    
     // RENDERER
 
     renderer.setSize(SCREEN_WIDTH, SCREEN_HEIGHT);
@@ -154,19 +155,13 @@ function init() {
 
     scene.fireLaser = laser;
 
-    UTILS.addLine(scene);//DEBUG
-    UTILS.addLineColor(scene);//DEBUG
-    UTILS.addLineColor(scene);//DEBUG
-    UTILS.addLine(scene);//DEBUG
+//    UTILS.addLine(scene);//DEBUG
+//    UTILS.addLineColor(scene);//DEBUG
+//    UTILS.addLineColor(scene);//DEBUG
+//    UTILS.addLine(scene);//DEBUG
     
      scan = new scaner(container, scene, controls.getObject(), SCREEN_HEIGHT / 2, SCREEN_HEIGHT / 2);
-
 }
-
-        
-       
-
-
 
 function animate() {
 
@@ -194,7 +189,6 @@ function render() {
     for (var index in scene.children) {
         mouseX += 1;
         var object = scene.children[index];
-//        object.updateMatrix();
 
         if (true === controls.CheckCollisionWithCamera(object)) {
             collision = true;
