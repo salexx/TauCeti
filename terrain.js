@@ -101,62 +101,62 @@ function terrain(scene, anisotropy)  {
             mesh2.position.z = cam.position.z;
         };
 
-    this.MakeBiburats = function(){
-        var mat = new THREE.MeshLambertMaterial({color: 0xffffff, shading: THREE.FlatShading, overdraw: true});
-        var sphere;
-        for (i=0;i<10;i++){
-            sphere= new THREE.Mesh(new THREE.SphereGeometry(2, 8, 8), mat);
-            sphere.position.y=0;
-            sphere.position.z = Math.random() * 1000 - 500;
-            sphere.position.x = Math.random() * 1000 - 500;
-            sphere.updateMatrix();
-            sphere.name = "biburat";
-            sphere.timerDelta = (Math.random() * 5+2)/1000;
-            sphere.prevTime = clock.getDelta();
-//            sphere.dir = new THREE.Vector3(0,0,1);
-            sphere.angle=0;
-            sphere.update = function(){
-                if (this.prevTime > this.timerDelta){
-                    this.prevTime =0;
-                    var rnd=Math.random();
-                    if (rnd>0.33){//поворот с вероятностью 2/3
-                        this.angle -= Math.PI / 2;//порот налево
-                        if (rnd>0.66){
-                            this.angle += Math.PI;//поворот направо
-                        }
-                    }//иначе едем прямо с вероятностью 1/3
-                }
-                this.rotation.y = this.angle;
-                this.prevTime += clock.getDelta();
-                this.translateZ(0.3);
-                
-            };
-            scene.add(sphere);
-        }
-    };
-    this.InitEnergyLines = function(){
-
-        var i=0,j=0,tmpObj;
-        for(i=0;i<this.energyLines.length-2;i++){
-            for (j=i+1;j<this.energyLines.length-2;j++){
-                var l1=this.energyLines[i].position.distanceToSquared(this.energyLines[j].position);
-                var l2=this.energyLines[i].position.distanceToSquared(this.energyLines[j+1].position);
-                if (l1>l2){
-                    tmpObj=this.energyLines[j];
-                    this.energyLines[j] = this.energyLines[j+1];
-                    this.energyLines[j+1] = tmpObj;
-                    continue;
-                }
-            }
-            this.energyLines[i].nearTower=this.energyLines[i+1];
-        }
-        for(i=0;i<this.energyLines.length-1-1;i++){
-            var num=this.energyLines[i].num;
-            var pos1=this.energyLines[i].position;
-            var pos2=this.energyLines[i+1].position;
-            UTILS.lines[num].scale.z= pos1.distanceTo(pos2);
-            UTILS.lines[num].updateMatrix();
-            UTILS.lines[num].lookAt(pos2);        
-        }
-    };
+//    this.MakeBiburats = function(){
+//        var mat = new THREE.MeshLambertMaterial({color: 0xffffff, shading: THREE.FlatShading, overdraw: true});
+//        var sphere;
+//        for (i=0;i<10;i++){
+//            sphere= new THREE.Mesh(new THREE.SphereGeometry(2, 8, 8), mat);
+//            sphere.position.y=0;
+//            sphere.position.z = Math.random() * 1000 - 500;
+//            sphere.position.x = Math.random() * 1000 - 500;
+//            sphere.updateMatrix();
+//            sphere.name = "biburat";
+//            sphere.timerDelta = (Math.random() * 5+2)/1000;
+//            sphere.prevTime = clock.getDelta();
+////            sphere.dir = new THREE.Vector3(0,0,1);
+//            sphere.angle=0;
+//            sphere.update = function(){
+//                if (this.prevTime > this.timerDelta){
+//                    this.prevTime =0;
+//                    var rnd=Math.random();
+//                    if (rnd>0.33){//поворот с вероятностью 2/3
+//                        this.angle -= Math.PI / 2;//порот налево
+//                        if (rnd>0.66){
+//                            this.angle += Math.PI;//поворот направо
+//                        }
+//                    }//иначе едем прямо с вероятностью 1/3
+//                }
+//                this.rotation.y = this.angle;
+//                this.prevTime += clock.getDelta();
+//                this.translateZ(0.3);
+//                
+//            };
+//            scene.add(sphere);
+//        }
+//    };
+//    this.InitEnergyLines = function(){
+//
+//        var i=0,j=0,tmpObj;
+//        for(i=0;i<this.energyLines.length-2;i++){
+//            for (j=i+1;j<this.energyLines.length-2;j++){
+//                var l1=this.energyLines[i].position.distanceToSquared(this.energyLines[j].position);
+//                var l2=this.energyLines[i].position.distanceToSquared(this.energyLines[j+1].position);
+//                if (l1>l2){
+//                    tmpObj=this.energyLines[j];
+//                    this.energyLines[j] = this.energyLines[j+1];
+//                    this.energyLines[j+1] = tmpObj;
+//                    continue;
+//                }
+//            }
+//            this.energyLines[i].nearTower=this.energyLines[i+1];
+//        }
+//        for(i=0;i<this.energyLines.length-1-1;i++){
+//            var num=this.energyLines[i].num;
+//            var pos1=this.energyLines[i].position;
+//            var pos2=this.energyLines[i+1].position;
+//            UTILS.lines[num].scale.z= pos1.distanceTo(pos2);
+//            UTILS.lines[num].updateMatrix();
+//            UTILS.lines[num].lookAt(pos2);        
+//        }
+//    };
 }

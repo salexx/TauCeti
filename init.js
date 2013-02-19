@@ -68,8 +68,8 @@ function init() {
     var maxAnisotropy = renderer.getMaxAnisotropy();
 
     terrain = new terrain(scene, maxAnisotropy);
-    terrain.MakeBiburats();
-    terrain.energyLines=[];
+    //terrain.MakeBiburats();
+    //terrain.energyLines=[];
     
     var mat = new THREE.MeshLambertMaterial({color: 0xffffff, shading: THREE.FlatShading, overdraw: true});
     sphere = new THREE.Mesh(new THREE.SphereGeometry(20, 20, 10), mat);
@@ -103,7 +103,8 @@ function init() {
     scene.add(controls.getObject());
     controls.enabled = true;
 
-    loadfabric();
+    loadfabric(scene);
+    loadcandle(scene);
 
     var renderModel = new THREE.RenderPass(scene, camera);
     var effectBloom = new THREE.BloomPass(1.2);
@@ -148,13 +149,11 @@ function animate() {
 
 function render() {
 
-
-
     var delta_time = clock.getDelta();
 
-        controls.update( delta_time * 10);
-        terrain.update(controls.getObject());
-        
+    controls.update( delta_time * 10);
+    
+    terrain.update(controls.getObject());    
   
     mouseX = 0;
     var collision = false;
