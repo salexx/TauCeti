@@ -1,0 +1,78 @@
+# Alias Wavefront MTL File Exported from SketchUp
+# with OBJexporter (c) 2013 TIG
+# Made for 'Deep_Space_Nine_Final.obj'
+
+newmtl Default_Material
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.333 0.333 0.333
+Ns 0
+d 1
+Tr 1
+
+newmtl Color_B20
+Ka 0.4 0.337255 0.317647
+Kd 0.4 0.337255 0.317647
+Ks 0.333 0.333 0.333
+Ns 0
+d 1
+Tr 1
+
+newmtl Color_B15
+Ka 0.6 0.509804 0.478431
+Kd 0.6 0.509804 0.478431
+Ks 0.333 0.333 0.333
+Ns 0
+d 1
+Tr 1
+
+newmtl Beige2
+Ka 0.643137 0.564706 0.415686
+Kd 0.643137 0.564706 0.415686
+Ks 0.333 0.333 0.333
+Ns 0
+d 1
+Tr 1
+
+newmtl Color_006
+Ka 0.337255 0.337255 0.337255
+Kd 0.337255 0.337255 0.337255
+Ks 0.333 0.333 0.333
+Ns 0
+d 1
+Tr 1
+
+newmtl Color_000
+Ka 1 1 1
+Kd 1 1 1
+Ks 0.333 0.333 0.333
+Ns 0
+d 1
+Tr 1
+
+newmtl Color_A11
+Ka 0.6 0 0
+Kd 0.6 0 0
+Ks 0.333 0.333 0.333
+Ns 0
+d 1
+Tr 1
+
+newmtl Color_009
+Ka 0 0 0
+Kd 0 0 0
+Ks 0.333 0.333 0.333
+Ns 0
+d 1
+Tr 1
+
+newmtl Tech256
+Ka 0.278431 0.231373 0.219608
+Kd 0.278431 0.231373 0.219608
+Ks 0.333 0.333 0.333
+Ns 0
+d 1
+Tr 1
+map_Kd Deep/Tech256.PNG
+
+#EOF

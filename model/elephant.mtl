@@ -1,6 +1,6 @@
 # Alias Wavefront MTL File Exported from SketchUp
 # with OBJexporter (c) 2013 TIG
-# Made for 'candle.obj'
+# Made for 'elephant.obj'
 
 newmtl Default_Material
 Ka 1 1 1
@@ -10,13 +10,12 @@ Ns 0
 d 1
 Tr 1
 
-newmtl Cladding_Stucco_White
-Ka 0.784314 0.784314 0.784314
-Kd 0.784314 0.784314 0.784314
+newmtl bronze
+Ka 0.372549 0.341176 0.286275
+Kd 0.372549 0.341176 0.286275
 Ks 0.333 0.333 0.333
 Ns 0
 d 1
 Tr 1
-map_Kd Cladding_Stucco_White.PNG
 
 #EOF
