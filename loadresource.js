@@ -27,6 +27,7 @@ function loadfabric(scene) {
 function loadcandle(scene) {
 
         var loader = new THREE.OBJMTLLoader();
+        glob.mon.add(loader);
         loader.addEventListener( 'load', function ( event ) {
 
                 var mesh = event.content;
@@ -52,6 +53,7 @@ function loadcandle(scene) {
 function loadElephant(scene) {
 
         var loader = new THREE.OBJMTLLoader();
+        glob.mon.add(loader);
         loader.addEventListener( 'load', function ( event ) {
 
                 var mesh = event.content;
@@ -64,7 +66,7 @@ function loadElephant(scene) {
                 mesh.position.x = - 100;
                 mesh.position.z = - 350;
                 mesh.scale.set(10,10,10);
-                //scene.add( mesh );
+                scene.add( mesh );
                 
                 glob.res["elephant"] = mesh;        
 
@@ -77,6 +79,7 @@ function loadElephant(scene) {
 function loadAlien3(scene) {
 
         var loader = new THREE.OBJMTLLoader();
+        glob.mon.add(loader);
         loader.addEventListener( 'load', function ( event ) {
 
                 var mesh = event.content;
@@ -104,6 +107,7 @@ function loadAlien3(scene) {
 function loadB7(scene) {
 
         var loader = new THREE.OBJMTLLoader();
+        glob.mon.add(loader);
         loader.addEventListener( 'load', function ( event ) {
 
                 var mesh = event.content;
@@ -121,14 +125,13 @@ function loadB7(scene) {
                 glob.res["B7"] = mesh;
 
         });
-
         loader.load( 'model/B7.obj', 'model/B7.mtl' );
-
 }
 
 function loadDeep(scene) {
 
         var loader = new THREE.OBJMTLLoader();
+        glob.mon.add(loader);
         loader.addEventListener( 'load', function ( event ) {
 
                 var mesh = event.content;

@@ -25,6 +25,7 @@ Global = function() {
     this.clock = new THREE.Clock();
     
     this.res = {}; // хранилище мешей 
+    this.mon;
 
 };
 
@@ -45,13 +46,16 @@ function onWindowResize() {
         
         glob.SCREEN_WIDTH = window.innerWidth;
         glob.SCREEN_HEIGHT = window.innerHeight;
+        
+        glob.windowHalfX = glob.SCREEN_WIDTH / 2;
+        glob.windowHalfY = glob.SCREEN_HEIGHT / 2;
 
-        glob.camera.aspect = SCREEN_WIDTH / SCREEN_HEIGHT;
+        glob.camera.aspect = glob.SCREEN_WIDTH / glob.SCREEN_HEIGHT;
         glob.camera.updateProjectionMatrix();
 
-        glob.renderer.setSize( SCREEN_WIDTH, SCREEN_HEIGHT );
+        glob.renderer.setSize( glob.SCREEN_WIDTH, glob.SCREEN_HEIGHT );
         
         glob.scaner.remove();
-        glob.scaner = new scaner(container, scene, controls.getObject(), SCREEN_HEIGHT / 2, SCREEN_HEIGHT / 2);
+        glob.scaner = new scaner(glob.container, glob.scene, glob.controls.getObject(), glob.windowHalfX, glob.windowHalfY);
 }
 window.addEventListener( 'resize', onWindowResize, false );

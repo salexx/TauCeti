@@ -3,17 +3,23 @@ if (!Detector.webgl) Detector.addGetWebGLMessage();
 glob = new Global();
 
 init();
-animate();
+//animate();
  
 function init() {
-
+     
+    glob.mon = new THREE.LoadingMonitor();
+    glob.mon.addEventListener('load',function(event){animate();});
+    glob.mon.addEventListener('progress',function(event){
+        console.log(event.loaded+":"+event.total);
+    });
+    
     glob.container = document.createElement('div');
     document.body.appendChild(glob.container);
 
     glob.renderer = new THREE.WebGLRenderer({antialias: true});
     glob.camera = new THREE.PerspectiveCamera(35, glob.SCREEN_WIDTH / glob.SCREEN_HEIGHT, 1, 1000);
     glob.scene = new THREE.Scene();
-    glob.PointLight = new pointlight(glob.scene);
+    //glob.PointLight = new Three.pointlight(glob.scene);
     glob.scene.add( glob.camera );
     
     // *** FOG INIT ***
